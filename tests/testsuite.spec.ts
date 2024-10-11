@@ -27,3 +27,19 @@ test('Test02 - Skapa faktura', async ({ page }) => {
 
   await expect(page.locator('text=Bills')).toBeVisible();
 });
+
+test.describe('Backend tests', () => {
+  test('Test01 - Logga in', async ({ request }) => {
+    const loginResponse = await request.post('http://localhost:3000/api/login', {
+      data: {
+        "username": process.env.TEST_USERNAME,
+        "password": process.env.TEST_PASSWORD
+      }
+    });
+
+    console.log('Login status code:', loginResponse.status());
+    console.log('Login response body:', await loginResponse.text());
+
+    expect(loginResponse.ok()).toBeTruthy();  // Kontrollera om inloggningen lyckades
+  });
+});
